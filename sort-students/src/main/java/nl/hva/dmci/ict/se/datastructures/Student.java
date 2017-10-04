@@ -17,17 +17,26 @@ public class Student {
     private double cijfer;
     
     public Student(){
-        if(studentNummer == 0){
+        if(nextStudentNummer == 0){
             initStudentNummer();
         }
         this.studentNummer = nextStudentNummer;
         nextStudentNummer++;
         Random rnd = new Random();
-        cijfer = rnd.nextDouble()*10+1;
+        double cijfer = rnd.nextDouble()*9+1;
+        this.cijfer = Math.round(cijfer * 10d) / 10d;
     }
     
     private void initStudentNummer(){
         nextStudentNummer = 50080001;
+    }
+    
+    public double getCijfer(){
+        return cijfer;
+    }
+    
+    public int getStudentNummer(){
+        return studentNummer;
     }
     
 }
