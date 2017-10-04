@@ -18,9 +18,25 @@ public class SortMain {
         for (int i = 0; i < 10000; i++) {
             studenten.add(new Student());
         }
-        
-        for(Student stu : studenten){
+
+        for (Student stu : studenten) {
             System.out.println("Studentnummer: " + stu.getStudentNummer() + " Cijfer: " + stu.getCijfer());
+        }
+
+        int[] freq = new int[101];
+        for (Student stu : studenten) {
+            double position = stu.getCijfer() * 10;
+            int intPos = (int) position;
+            int occurrence = freq[intPos];
+            occurrence++;
+            freq[intPos] = occurrence;
+        }
+
+        double cijfer = 1.0;
+        for (int i = 10; i < 101; i++) {
+            //System.out.printf("%.1f, %f", cijfer, freq[i]);
+            System.out.println(cijfer + ", " + freq[i]);
+            cijfer = (cijfer*10+1)/10;
         }
     }
 }
