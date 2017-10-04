@@ -5,17 +5,19 @@
  */
 package nl.hva.dmci.ict.se.datastructures;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
  *
  * @author Yoeri
  */
-public class Student {
+public class Student implements Comparable<Student> {
+
     private static int nextStudentNummer;
     private int studentNummer;
     private double cijfer;
-    
+
     public Student(){
         if(nextStudentNummer == 0){
             initStudentNummer();
@@ -23,12 +25,24 @@ public class Student {
         this.studentNummer = nextStudentNummer;
         nextStudentNummer++;
         Random rnd = new Random();
+        cijfer = rnd.nextDouble() * 10 + 1;
         double cijfer = rnd.nextDouble()*9+1;
         this.cijfer = Math.round(cijfer * 10d) / 10d;
     }
-    
-    private void initStudentNummer(){
+
+    private void initStudentNummer() {
         nextStudentNummer = 50080001;
+    }
+
+    @Override
+    public int compareTo(Student o) {
+        if(cijfer == o.cijfer){
+            return studentNummer - o.studentNummer;
+        } else if (cijfer < o.cijfer){
+            return -1;
+        } else {
+            return 1;
+        }
     }
     
     public double getCijfer(){
@@ -38,5 +52,4 @@ public class Student {
     public int getStudentNummer(){
         return studentNummer;
     }
-    
 }
