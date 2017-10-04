@@ -12,14 +12,6 @@
         <maven.jar.plugin.version>3.0.2</maven.jar.plugin.version>
     </properties>
 
-	<dependencies>
-	    <dependency>
-	        <groupId>nl.hva.dmci.ict.se.datastructures</groupId>
-	        <artifactId>recursion</artifactId>
-	        <version>0.0.1-SNAPSHOT</version>
-	    </dependency>
-	</dependencies>
-
     <!-- Remove the follow tag completely when you copy-paste the isStijgend code. -->
     <build> 
         <plugins>
