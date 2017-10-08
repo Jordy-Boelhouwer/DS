@@ -17,6 +17,8 @@ public class Student implements Comparable<Student> {
     private static int nextStudentNummer;
     private int studentNummer;
     private double cijfer;
+    private String klas;
+    private Student next;
 
     public Student(){
         if(nextStudentNummer == 0){
@@ -25,9 +27,12 @@ public class Student implements Comparable<Student> {
         this.studentNummer = nextStudentNummer;
         nextStudentNummer++;
         Random rnd = new Random();
-        cijfer = rnd.nextDouble() * 10 + 1;
-        double cijfer = rnd.nextDouble()*9+1;
-        this.cijfer = Math.round(cijfer * 10d) / 10d;
+        int cijfer = rnd.nextInt(100)+1;
+        while(cijfer < 10){
+            cijfer = rnd.nextInt(100)+1;
+        }
+        double doubleCijfer = cijfer/10.0;
+        this.cijfer = Math.round(doubleCijfer * 10d) / 10d;
     }
 
     private void initStudentNummer() {
@@ -52,4 +57,14 @@ public class Student implements Comparable<Student> {
     public int getStudentNummer(){
         return studentNummer;
     }
+    
+    public void setKlas(String klas){
+        this.klas = klas;
+    }
+
+    public String getKlas() {
+        return klas;
+    }
+    
+    
 }

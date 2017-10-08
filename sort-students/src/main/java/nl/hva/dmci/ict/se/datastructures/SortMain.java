@@ -19,7 +19,6 @@ public class SortMain {
         for (int i = 0; i < 10000; i++) {
             studenten.add(new Student());
         }
-<<<<<<< HEAD
 
         for (Student stu : studenten) {
             System.out.println("Studentnummer: " + stu.getStudentNummer() + " Cijfer: " + stu.getCijfer());
@@ -40,15 +39,24 @@ public class SortMain {
             System.out.println(cijfer + ", " + freq[i]);
             cijfer = (cijfer*10+1)/10;
         }
-=======
         
         sortAscending(studenten);
         
-        for(Student stu : studenten){
-            System.out.println("Studentnummer: " + stu.getStudentNummer() + " Cijfer: " + stu.getCijfer());
+        String[] klassenLijst = KlasGenerator.maakKlassen(10000);
+        
+        for (int i = 0; i < studenten.size()-1; i++) {
+            Student current = studenten.get(i);
+            current.setKlas(klassenLijst[i]);
+            studenten.set(i, current);
+            
+             System.out.println("Studentnummer: " + studenten.get(i).getStudentNummer() +
+                     " Cijfer: " + studenten.get(i).getCijfer() +
+                     " Klas: " + studenten.get(i).getKlas());
         }
         
         System.out.println(isStijgend(studenten, studenten.size() - 1));
+        
+        
     }
     
     public static void sortAscending(ArrayList<Student> studenten) {
@@ -58,7 +66,7 @@ public class SortMain {
         for (int i = 0; i < studenten.size() - 1; i++) {
             // Assume first element is min
             min = i;
-            for (int j = i + 1; j < studenten.size() - 1; j++) {
+            for (int j = i + 1; j < studenten.size(); j++) {
                 if (studenten.get(min).compareTo(studenten.get(j)) > 0){
                     min = j;
                 }
@@ -73,12 +81,11 @@ public class SortMain {
         if(n == 0){
             return true;
         }
-        if(rijtje.get(n).compareTo(rijtje.get(n-1)) == 1){
+        if(rijtje.get(n).compareTo(rijtje.get(n-1)) == 1 || rijtje.get(n).compareTo(rijtje.get(n-1)) == 0){
             if(isStijgend(rijtje, n-1) == true){
                 return true;
             }
         }
         return false;
->>>>>>> 4d2baf845a6d36ace0d8d26b776829febd627000
     }
 }
