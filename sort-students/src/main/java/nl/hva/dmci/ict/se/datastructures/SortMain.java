@@ -7,6 +7,7 @@ package nl.hva.dmci.ict.se.datastructures;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -37,28 +38,31 @@ public class SortMain {
 
         double cijfer = 1.0;
         for (int i = 10; i < 101; i++) {
-            //System.out.printf("%.1f, %f", cijfer, freq[i]);
             System.out.println(cijfer + ", " + freq[i]);
             cijfer = (cijfer * 10 + 1) / 10;
         }
 
         String[] klassenLijst = KlasGenerator.maakKlassen(10000);
 
-        for (int i = 0; i < studenten.size() - 1; i++) {
+        for (int i = 0; i < studenten.size(); i++) {
             Student current = studenten.get(i);
             current.setKlas(klassenLijst[i]);
             studenten.set(i, current);
         }
         
-        bucketSort(studenten);
-        
-        for(int i = 0; i < studenten.size() - 1; i++){
-            System.out.println("Studentnummer: " + studenten.get(i).getStudentNummer()
-                    + " Cijfer: " + studenten.get(i).getCijfer()
-                    + " Klas: " + studenten.get(i).getKlas());
+        // ==== PRINT THE BUCKETLIST ====
+        System.out.println(isStijgend(studenten, studenten.size() - 1));
+
+        LinkedList<LinkedList<Student>> buckets = bucketSort(studenten);
+
+        for (LinkedList<Student> klas : buckets) {
+            Iterator iterator = klas.iterator();
+            while (iterator.hasNext()) {
+                Student stu = (Student) iterator.next();
+                System.out.println(stu.toString());
+            }
         }
 
-        System.out.println(isStijgend(studenten, studenten.size() - 1));
     }
 
     public static void sortAscending(ArrayList<Student> studenten) {
@@ -91,29 +95,26 @@ public class SortMain {
         return false;
     }
 
-    public static void bucketSort(ArrayList<Student> students) {
-        final String[] courses = {"IB", "IG", "IN", "IS", "IT"};
-        final int amountOfBuckets = courses.length;
+    public static LinkedList<LinkedList<Student>> bucketSort(ArrayList<Student> students) {
+        ArrayList<String> uniqueClasses = uniqueClasses(students);
         final int n = students.size();
 
         if (n == 0) {
-            return;
+            return null;
         }
 
         LinkedList<LinkedList<Student>> buckets = new LinkedList<>(); //create buckets
-        for (int i = 0; i < amountOfBuckets; i++) {
-            buckets.add(new LinkedList<>()); //fill bucketlist with buckets
+        for (int i = 0; i < uniqueClasses.size()-1; i++) {
+            buckets.add(new LinkedList<Student>()); //fill bucketlist with buckets
+        }
+        
+        for(Student stu : students){
+            String klas = stu.getKlas();
+            int indexBucket = uniqueClasses.indexOf(klas);
+            buckets.get(indexBucket).add(stu);
         }
 
-        for (int i = 0; i < courses.length; i++) {
-            for (Student student : students) {
-                if (student.getKlas().startsWith(courses[i])) {
-                    buckets.get(i).add(student);
-                }
-            }
-        }
-
-        for (int i = 0; i < amountOfBuckets; i++) {
+        for (int i = 0; i < uniqueClasses.size()-1; i++) {
             LinkedList<Student> studentLinkedList = buckets.get(i);
             Student[] s = studentLinkedList.toArray(new Student[studentLinkedList.size()]);
             insertionSortByClass(s);
@@ -129,6 +130,7 @@ public class SortMain {
         for (int i = 0; i < result.size(); i++) {
             students.set(i, result.get(i));
         }
+        return buckets;
     }
 
     public static void insertionSortByClass(Student[] student) {
@@ -142,5 +144,26 @@ public class SortMain {
                 }
             }
         }
+    }
+
+    public static ArrayList<String> uniqueClasses(ArrayList<Student> studenten) {
+        ArrayList<String> uniqueClasses = new ArrayList<String>();
+        for (Student stu : studenten) {
+            String klas = stu.getKlas();
+            if (uniqueClasses.isEmpty()) {
+                uniqueClasses.add(klas);
+            }
+
+            int unique = 0;
+            for (int i = 0; i < uniqueClasses.size(); i++) {
+                if (klas == uniqueClasses.get(i)) {
+                    unique++;
+                }
+            }
+            if (unique == 0) {
+                uniqueClasses.add(klas);
+            }
+        }
+        return uniqueClasses;
     }
 }

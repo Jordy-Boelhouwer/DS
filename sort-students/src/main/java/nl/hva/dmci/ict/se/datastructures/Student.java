@@ -66,5 +66,9 @@ public class Student implements Comparable<Student> {
         return klas;
     }
     
+    public String toString(){
+        return "Studentnummer: " + studentNummer + " Cijfer: " + cijfer + " Klas: " + klas;
+    }
+    
     
 }
