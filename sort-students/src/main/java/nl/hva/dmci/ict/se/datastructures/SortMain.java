@@ -19,7 +19,6 @@ public class SortMain {
         for (int i = 0; i < 10000; i++) {
             studenten.add(new Student());
         }
-<<<<<<< HEAD
 
         for (Student stu : studenten) {
             System.out.println("Studentnummer: " + stu.getStudentNummer() + " Cijfer: " + stu.getCijfer());
@@ -40,7 +39,6 @@ public class SortMain {
             System.out.println(cijfer + ", " + freq[i]);
             cijfer = (cijfer*10+1)/10;
         }
-=======
         
         sortAscending(studenten);
         
@@ -79,6 +77,5 @@ public class SortMain {
             }
         }
         return false;
->>>>>>> 4d2baf845a6d36ace0d8d26b776829febd627000
     }
 }
