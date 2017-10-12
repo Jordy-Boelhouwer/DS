@@ -5,11 +5,14 @@
  */
 package nl.hva.dmci.ict.se.datastructures;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import nl.hva.dmci.ict.se.datastructures.Stopwatch;
 
 /**
  *
@@ -17,9 +20,12 @@ import java.util.List;
  */
 public class SortMain {
 
+    private static double tijd;
+    static Stopwatch stopwatch = new Stopwatch();
+
     public static void main(String[] args) {
         ArrayList<Student> studenten = new ArrayList<Student>();
-        for (int i = 0; i < 10000; i++) {
+        for (int i = 0; i < 80000; i++) {
             studenten.add(new Student());
         }
 
@@ -41,19 +47,32 @@ public class SortMain {
             System.out.println(cijfer + ", " + freq[i]);
             cijfer = (cijfer * 10 + 1) / 10;
         }
+        
+        Student[] studentenArray = new Student[studenten.size()-1];
+        for (int i = 0; i < studenten.size()-1; i++) {
+            studentenArray[i] = studenten.get(i);
+        }
+        
+        double beforeInsertion = stopwatch.elapsedTime();
+        insertionSortByGrade(studentenArray);
+        double afterInsertion = stopwatch.elapsedTime();
 
-        String[] klassenLijst = KlasGenerator.maakKlassen(10000);
+        String[] klassenLijst = KlasGenerator.maakKlassen(studenten.size());
 
         for (int i = 0; i < studenten.size(); i++) {
             Student current = studenten.get(i);
             current.setKlas(klassenLijst[i]);
             studenten.set(i, current);
         }
-        
+
         // ==== PRINT THE BUCKETLIST ====
         System.out.println(isStijgend(studenten, studenten.size() - 1));
 
+        double beforeBucket = stopwatch.elapsedTime();
+
         LinkedList<LinkedList<Student>> buckets = bucketSort(studenten);
+        
+        double afterBucket = stopwatch.elapsedTime();
 
         for (LinkedList<Student> klas : buckets) {
             Iterator iterator = klas.iterator();
@@ -62,6 +81,10 @@ public class SortMain {
                 System.out.println(stu.toString());
             }
         }
+        
+        
+        System.out.println("\nBefore InsertionSort on students: " + beforeInsertion + "\nAfter InsertionSort on students: " + afterInsertion + "\nTime needed: " + (afterInsertion - beforeInsertion));
+        System.out.println("\nBefore BucketSort on students: " + beforeBucket + "\nAfter BucketSort on students: " + afterBucket + "\nTime needed: " + (afterBucket - beforeBucket));
 
     }
 
@@ -104,20 +127,20 @@ public class SortMain {
         }
 
         LinkedList<LinkedList<Student>> buckets = new LinkedList<>(); //create buckets
-        for (int i = 0; i < uniqueClasses.size()-1; i++) {
+        for (int i = 0; i < uniqueClasses.size() - 1; i++) {
             buckets.add(new LinkedList<Student>()); //fill bucketlist with buckets
         }
-        
-        for(Student stu : students){
+
+        for (Student stu : students) {
             String klas = stu.getKlas();
             int indexBucket = uniqueClasses.indexOf(klas);
             buckets.get(indexBucket).add(stu);
         }
 
-        for (int i = 0; i < uniqueClasses.size()-1; i++) {
+        for (int i = 0; i < uniqueClasses.size() - 1; i++) {
             LinkedList<Student> studentLinkedList = buckets.get(i);
             Student[] s = studentLinkedList.toArray(new Student[studentLinkedList.size()]);
-            insertionSortByClass(s);
+            insertionSortByGrade(s);
             studentLinkedList = new LinkedList<>(Arrays.asList(s));
             buckets.set(i, studentLinkedList);
         }
@@ -133,7 +156,7 @@ public class SortMain {
         return buckets;
     }
 
-    public static void insertionSortByClass(Student[] student) {
+    public static void insertionSortByGrade(Student[] student) {
         Student temp;
         for (int i = 1; i < student.length; i++) {
             for (int j = i; j > 0; j--) {
